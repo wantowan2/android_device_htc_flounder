@@ -1,0 +1,3 @@
+#say persist.sys.usb
+
+persist.sys.usb.config=mtp,adb

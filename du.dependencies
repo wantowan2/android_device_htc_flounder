@@ -1,8 +1,0 @@
-[
-  {
-    "remote":       "du",
-    "repository":   "android_kernel_asus_flounder",
-    "target_path":  "kernel/asus/flounder",
-    "revision":     "lollipop"
-  }
-]

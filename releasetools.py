@@ -30,3 +30,4 @@ def IncrementalOTA_InstallEnd(info):
       common.ZipWriteStr(info.output_zip, "bootloader.img", target_firmware_img)
       info.script.AppendExtra(
           'package_extract_file("bootloader.img", "/dev/block/platform/sdhci-tegra.3/by-name/OTA");')
+

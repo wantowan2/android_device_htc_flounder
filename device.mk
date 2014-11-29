@@ -14,16 +14,17 @@
 # limitations under the License.
 #
 
-# Kernel inline build
-TARGET_KERNEL_SOURCE := kernel/asus/flo
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-4.7
-TARGET_KERNEL_CONFIG := flounder_defconfig
-
 PRODUCT_PACKAGES := \
     libwpa_client \
     hostapd \
     wpa_supplicant \
     wpa_supplicant.conf
+
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+LOCAL_KERNEL := device/htc/flounder-kernel/Image.gz-dtb
+else
+LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
 
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 

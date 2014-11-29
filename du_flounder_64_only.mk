@@ -31,6 +31,7 @@ PRODUCT_PACKAGES += \
         rild
 
 # Inherit from those products. Most specific first.
+$(call inherit-product, $(LOCAL_PATH)/du_flounder.mk)
 $(call inherit-product, device/htc/flounder/product_64_only.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 

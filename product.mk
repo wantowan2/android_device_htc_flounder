@@ -17,14 +17,7 @@
 # based on the flounder device
 #
 
-$(call inherit-product, $(SRC_TARGET_DIR)/art/build/Android.common_build.mk)
-
-PRELOADED_CLASSES := frameworks/base/preloaded-classes
-
-# start of image reserved address space
-LIBART_IMG_HOST_BASE_ADDRESS   := 0x60000000
-LIBART_IMG_TARGET_BASE_ADDRESS := 0x70000000
-
+PRODUCT_RUNTIMES := runtime_libart_default
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, device/htc/flounder/device.mk)

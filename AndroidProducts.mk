@@ -16,5 +16,7 @@
 
 PRODUCT_MAKEFILES := \
 	$(LOCAL_DIR)/du_flounder.mk \
+	$(LOCAL_DIR)/du_flounder32.mk \
 	$(LOCAL_DIR)/du_flounder64.mk \
 	$(LOCAL_DIR)/du_flounder_64_only.mk
+

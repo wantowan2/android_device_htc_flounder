@@ -1,0 +1,8 @@
+[
+  {
+    "remote":       "wantowan2",
+    "repository":   "flounder",
+    "target_path":  "kernel/htc/flounder",
+    "revision":     "lp_rel"
+  }
+]

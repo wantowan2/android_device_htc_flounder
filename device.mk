@@ -106,7 +106,11 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/media_profiles.xml:system/etc/media_profiles.xml \
     $(LOCAL_PATH)/audio_policy.conf:system/etc/audio_policy.conf \
-    $(LOCAL_PATH)/mixer_paths_0.xml:system/etc/mixer_paths_0.xml
+    $(LOCAL_PATH)/mixer_paths_0.xml:system/etc/mixer_paths_0.xml \
+    $(LOCAL_PATH)/audio_effects.conf:system/etc/audio_effects.conf \
+    $(LOCAL_PATH)/fmas_eq.dat:system/etc/fmas_eq.dat \
+    $(LOCAL_PATH)/RT5506:system/etc/RT5506 \
+    $(LOCAL_PATH)/libfmas.so:system/lib/soundfx/libfmas.so
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/enctune.conf:system/etc/enctune.conf
@@ -148,16 +152,20 @@ PRODUCT_COPY_FILES += \
     device/htc/flounder/nfc/libnfc-brcm.conf:system/etc/libnfc-brcm.conf \
     device/htc/flounder/nfc/libnfc-brcm-20795a10.conf:system/etc/libnfc-brcm-20795a10.conf
 
+# Bluetooth config files
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/bluetooth/bt_vendor.conf:system/etc/bluetooth/bt_vendor.conf
+
 PRODUCT_AAPT_CONFIG := normal large xlarge hdpi xhdpi xxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
-ifneq ($(filter volantis volantisf, $(TARGET_PRODUCT)),)
+ifneq ($(filter aosp_flounder, $(TARGET_PRODUCT)),)
 # Wifi-Only overlays.
 DEVICE_PACKAGE_OVERLAYS := \
-    $(LOCAL_PATH)/wifi_only_overlay \
-    $(LOCAL_PATH)/overlay
+    $(LOCAL_PATH)/overlay \
+    $(LOCAL_PATH)/wifi_only_overlay
 else
 DEVICE_PACKAGE_OVERLAYS := \
     $(LOCAL_PATH)/overlay
@@ -182,7 +190,17 @@ PRODUCT_PACKAGES += \
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
-    fsck.f2fs mkfs.f2fs
+    e2fsck \
+    mke2fs \
+    tune2fs \
+    mkfs.exfat \
+    fsck.exfat \
+    mount.exfat \
+    mkfs.f2fs \
+    fsck.f2fs \
+    fibmap.f2fs \
+    ntfsfix \
+    ntfs-3g
 
 PRODUCT_PROPERTY_OVERRIDES := \
     wifi.interface=wlan0 \
@@ -203,7 +221,33 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.bt.bdaddr_path=/sys/module/flounder_bdaddress/parameters/bdaddress \
     ro.frp.pst=/dev/block/platform/sdhci-tegra.3/by-name/PST \
     ro.ril.def.agps.mode=1 \
-    persist.tegra.compositor=glcomposer
+    persist.tegra.compositor=glcomposer \
+    ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html \
+    ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html \
+    ro.com.google.clientidbase=android-google \
+    ro.com.android.wifi-watchlist=GoogleGuest \
+    ro.error.receiver.system.apps=com.google.android.gms \
+    ro.setupwizard.enterprise_mode=1 \
+    ro.setupwizard.network_required=true \
+    ro.setupwizard.require_network=wifi \
+    ro.setupwizard.gservices_delay=-1 \
+    keyguard.no_require_sim=true \
+    ro.facelock.black_timeout=700 \
+    ro.facelock.det_timeout=1500 \
+    ro.facelock.rec_timeout=2500 \
+    ro.facelock.lively_timeout=2500 \
+    ro.facelock.est_max_time=500 \
+    ro.facelock.use_intro_anim=true \
+    camera.flash_off=0 \
+    drm.service.enabled=true \
+    ro.com.widevine.cachesize=16777216 \
+    fmas.spkr_6ch=35,20,110 \
+    fmas.spkr_2ch=35,25 \
+    fmas.spkr_angles=10 \
+    fmas.spkr_sgain=0 \
+    media.aac_51_output_enabled=true \
+    dalvik.vm.dex2oat-flags="--compiler-filter=interpret-only" \
+    dalvik.vm.image-dex2oat-flags=""
 
 # setup dalvik vm configs.
 $(call inherit-product, frameworks/native/build/tablet-10in-xhdpi-2048-dalvik-heap.mk)
@@ -226,6 +270,7 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     libhtcacoustic \
     libnvvisualizer
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.audio.monitorRotation=true
 
@@ -245,6 +290,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.enable_boot_charger_mode=1
 
+# overwrite product specific build properties
+PRODUCT_BUILD_PROP_OVERRIDES += \
+    PRODUCT_NAME=volantis \
+    BUILD_DISPLAY_ID="wantowan2 $(BUILD_ID) $(shell date +%Y%m%d)" \
+    BUILD_FINGERPRINT="google/volantis/flounder:5.0.1/LRX22C/1602158:user/release-keys" \
+    PRIVATE_BUILD_DESC="volantis-user 5.0.1 LRX22C 1602158 release-keys"
+
 # add verity dependencies
 $(call inherit-product, build/target/product/verity.mk)
 PRODUCT_SYSTEM_VERITY_PARTITION := /dev/block/platform/sdhci-tegra.3/by-name/APP
@@ -256,3 +308,4 @@ $(call inherit-product-if-exists, vendor/htc/flounder/device-vendor.mk)
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4354/device-bcm.mk)
 $(call inherit-product-if-exists, vendor/htc/flounder/audio/lifevibes/lvve/device-vendor-lvve.mk)
 $(call inherit-product-if-exists, vendor/htc/flounder/audio/tfa/device-vendor-tfa.mk)
+

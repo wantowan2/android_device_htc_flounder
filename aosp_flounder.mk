@@ -23,6 +23,7 @@
 
 # Live Wallpapers
 PRODUCT_PACKAGES += \
+        rild \
         Launcher3
 
 PRODUCT_PROPERTY_OVERRIDES := \

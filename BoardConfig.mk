@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2011 The Android Open-Source Project
+# Copyright (C) 2013-2014 The Android Open-Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,27 +14,15 @@
 # limitations under the License.
 #
 
-TARGET_BOOTLOADER_BOARD_NAME := flounder
-TARGET_BOOTLOADER_NAME := flounder
-TARGET_BOARD_INFO_FILE := device/htc/flounder/board-info.txt
-BOARD_HAL_STATIC_LIBRARIES := libdumpstate.flo
-
-TARGET_KERNEL_CONFIG := kernel/htc/flounder/arch/arm64/configs/flounder_defconfig
-
-TARGET_RELEASETOOLS_EXTENSIONS := device/htc/flounder
-
-TARGET_RECOVERY_FSTAB = device/htc/flounder/fstab.flounder
-
 # Use the non-open-source parts, if they're present
 -include vendor/htc/flounder/BoardConfigVendor.mk
-
 # Build a separate vendor.img
 TARGET_COPY_OUT_VENDOR := vendor
 
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_ABI2 := cortex-a15
+TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := denver64
 TARGET_CPU_SMP := true
 
@@ -66,6 +54,8 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2782920704
 BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 4096
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_PARTITION_SIZE := 268435456
 
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BOARD_USES_GENERIC_INVENSENSE := false
@@ -129,16 +119,23 @@ BOARD_SEPOLICY_UNION := \
 TARGET_USES_64_BIT_BCMDHD := true
 TARGET_USES_64_BIT_BINDER := true
 
-TARGET_DEVICE := du_flounder64
-
 TARGET_USES_LOGD := true
 BOARD_WIDEVINE_OEMCRYPTO_LEVEL := 1
 
 # HACK: Build apps as 64b for volantis_64_only
 ifneq (,$(filter ro.zygote=zygote64, $(PRODUCT_DEFAULT_PROPERTY_OVERRIDES)))
 TARGET_PREFER_32_BIT_APPS :=
-TARGET_SUPPORTS_32_BIT_APPS := true
+TARGET_SUPPORTS_32_BIT_APPS :=
 TARGET_SUPPORTS_64_BIT_APPS := true
+endif
+
+# Enable dex-preoptimization to speed up first boot sequence
+ifeq ($(HOST_OS),linux)
+  ifeq ($(TARGET_BUILD_VARIANT),user)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := true
+    endif
+  endif
 endif
 
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/flounder
@@ -152,5 +149,3 @@ EXTENDED_FONT_FOOTPRINT := true
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
 MALLOC_IMPL := dlmalloc
-
-DALVIK_VM_LIB := libart.so

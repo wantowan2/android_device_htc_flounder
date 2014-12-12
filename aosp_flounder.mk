@@ -33,7 +33,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
 # Inherit from those products. Most specific first.
 $(call inherit-product, device/htc/flounder/product.mk)
 $(call inherit-product, device/htc/flounder/device.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 
 PRODUCT_NAME := aosp_flounder
 PRODUCT_DEVICE := flounder
@@ -41,3 +40,5 @@ PRODUCT_BRAND := google
 PRODUCT_MODEL := Nexus 9
 PRODUCT_MANUFACTURER := htc
 PRODUCT_RESTRICT_VENDOR_FILES := owner path
+
+LIBART_IMG_HOST_BASE_ADDRESS :=

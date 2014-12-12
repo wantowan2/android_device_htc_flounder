@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+# start of image reserved address space
+LIBART_IMG_HOST_BASE_ADDRESS   := 0x60000000
+LIBART_IMG_TARGET_BASE_ADDRESS := 0x70000000
+
 # Use the non-open-source parts, if they're present
 -include vendor/htc/flounder/BoardConfigVendor.mk
 # Build a separate vendor.img
@@ -31,6 +35,12 @@ TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := denver
+
+HAS_PREBUILT_KERNEL := true
+BOARD_KERNEL_IMAGE_NAME := device/htc/flounder-kernel/Image.gz-dtb
+
+TARGET_KERNEL_CONFIG := kernel/htc/flounder/arch/arm64/configs/flounder_defconfig
+TARGET_KERNEL_CONFIG_CUSTOM := kernel/htc/flounder/arch/arm64/configs/elementalx_defconfig
 
 # Disable emulator for "make dist" until there is a 64-bit qemu kernel
 BUILD_EMULATOR := false
@@ -149,3 +159,5 @@ EXTENDED_FONT_FOOTPRINT := true
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
 MALLOC_IMPL := dlmalloc
+
+TARGET_USE_QCOM_UTILS := false

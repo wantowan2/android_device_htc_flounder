@@ -21,7 +21,7 @@
 # are responsible for having their own logic, for fine-grained control.
 
 ifneq ($(filter flounder%, $(TARGET_DEVICE)),)
-
+DU_TARGET_PACKAGE := $(PRODUCT_OUT)/$(DU_VERSION).zip
 LOCAL_PATH := $(call my-dir)
 
 # if some modules are built directly from this directory (not subdirectories),

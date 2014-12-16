@@ -1,8 +1,6 @@
 [
-  {
-    "remote":       "wantowan2",
-    "repository":   "flounder",
-    "target_path":  "kernel/htc/flounder",
-    "revision":     "lp_rel"
-  }
+{
+"repository": "device_htc_flounder-kernel",
+"target_path": "device/htc/flounder-kernel"
+}
 ]

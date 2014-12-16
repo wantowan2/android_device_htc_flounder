@@ -6,6 +6,7 @@
 # You may obtain a copy of the License at
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
+
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,11 +18,6 @@
 # start of image reserved address space
 LIBART_IMG_HOST_BASE_ADDRESS   := 0x60000000
 LIBART_IMG_TARGET_BASE_ADDRESS := 0x70000000
-
-# Use the non-open-source parts, if they're present
--include vendor/htc/flounder/BoardConfigVendor.mk
-# Build a separate vendor.img
-TARGET_COPY_OUT_VENDOR := vendor
 
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -35,19 +31,18 @@ TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := denver
+ARCH_ARM_HAVE_NEON := true
 
-HAS_PREBUILT_KERNEL := true
-BOARD_KERNEL_IMAGE_NAME := device/htc/flounder-kernel/Image.gz-dtb
-
-TARGET_KERNEL_CONFIG := kernel/htc/flounder/arch/arm64/configs/flounder_defconfig
-TARGET_KERNEL_CONFIG_CUSTOM := kernel/htc/flounder/arch/arm64/configs/elementalx_defconfig
-
-# Disable emulator for "make dist" until there is a 64-bit qemu kernel
-BUILD_EMULATOR := false
+TARGET_KERNEL_SOURCE := kernel/htc/flounder-kernel
 
 TARGET_NO_BOOTLOADER := true
 
 TARGET_NO_RADIOIMAGE := true
+
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+
+# Disable emulator for "make dist" until there is a 64-bit qemu kernel
+BUILD_EMULATOR := false
 
 TARGET_BOARD_PLATFORM := tegra132
 TARGET_BOARD_INFO_FILE := device/htc/flounder/board-info.txt
@@ -103,29 +98,6 @@ WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
 WIFI_DRIVER_FW_PATH_STA     := "/vendor/firmware/fw_bcmdhd.bin"
 WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 
-BOARD_SEPOLICY_DIRS := device/htc/flounder/sepolicy
-BOARD_SEPOLICY_UNION := \
-	bluetooth.te \
-	device.te \
-	drmserver.te \
-	file.te \
-	file_contexts \
-	genfs_contexts \
-	gpsd.te \
-	kernel.te \
-	kickstart.te \
-	mediaserver.te \
-	netd.te \
-	netmgrd.te \
-	qmuxd.te \
-	radio.te \
-	rild.te \
-	surfaceflinger.te \
-	system_server.te \
-	tee.te \
-	te_macros \
-	touch_fusion.te
-
 TARGET_USES_64_BIT_BCMDHD := true
 TARGET_USES_64_BIT_BINDER := true
 
@@ -147,6 +119,7 @@ ifeq ($(HOST_OS),linux)
     endif
   endif
 endif
+DONT_DEXPREOPT_PREBUILTS := true
 
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/flounder
 
@@ -160,4 +133,17 @@ BOARD_CHARGER_ENABLE_SUSPEND := true
 
 MALLOC_IMPL := dlmalloc
 
-TARGET_USE_QCOM_UTILS := false
+# Use the non-open-source parts, if they're present
+-include vendor/du/config/common.mk
+-include vendor/du/config/common.mkcommon_full_tablet_wifionly.mk
+-include vendor/htc/flounder/BoardConfigVendor.mk
+
+# Build a separate vendor.img
+
+TARGET_COPY_OUT_VENDOR := vendor
+
+# Assert
+TARGET_BOARD_INFO_FILE ?= device/htc/flounder/board-info.txt
+TARGET_OTA_ASSERT_DEVICE := flounder,volantis
+
+

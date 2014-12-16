@@ -161,7 +161,7 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
-ifneq ($(filter aosp_flounder, $(TARGET_PRODUCT)),)
+ifneq ($(filter du_flounder, $(TARGET_PRODUCT)),)
 # Wifi-Only overlays.
 DEVICE_PACKAGE_OVERLAYS := \
     $(LOCAL_PATH)/overlay \

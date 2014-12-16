@@ -19,6 +19,11 @@
 LIBART_IMG_HOST_BASE_ADDRESS   := 0x60000000
 LIBART_IMG_TARGET_BASE_ADDRESS := 0x70000000
 
+# Use the non-open-source parts, if they're present
+-include vendor/htc/flounder/BoardConfigVendor.mk
+# Build a separate vendor.img
+TARGET_COPY_OUT_VENDOR := vendor
+
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
@@ -34,6 +39,15 @@ TARGET_2ND_CPU_VARIANT := denver
 ARCH_ARM_HAVE_NEON := true
 
 TARGET_KERNEL_SOURCE := kernel/htc/flounder-kernel
+
+HAS_PREBUILT_KERNEL := true
+BOARD_KERNEL_IMAGE_NAME := device/htc/flounder-kernel/Image.gz-dtb
+
+TARGET_KERNEL_CONFIG := kernel/htc/flounder/arch/arm64/configs/flounder_defconfig
+TARGET_KERNEL_CONFIG_CUSTOM := kernel/htc/flounder/arch/arm64/configs/elementalx_defconfig
+
+# Disable emulator for "make dist" until there is a 64-bit qemu kernel
+BUILD_EMULATOR := false
 
 TARGET_NO_BOOTLOADER := true
 
@@ -146,4 +160,6 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_BOARD_INFO_FILE ?= device/htc/flounder/board-info.txt
 TARGET_OTA_ASSERT_DEVICE := flounder,volantis
 
+
+TARGET_USE_QCOM_UTILS := false
 

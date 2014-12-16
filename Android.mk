@@ -22,6 +22,9 @@
 
 ifneq ($(filter flounder, $(TARGET_DEVICE)),)
 
+ifneq ($(filter flounder%, $(TARGET_DEVICE)),)
+DU_TARGET_PACKAGE := $(PRODUCT_OUT)/$(DU_VERSION).zip
+
 LOCAL_PATH := $(call my-dir)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))

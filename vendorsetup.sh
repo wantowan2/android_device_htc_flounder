@@ -1,3 +1,4 @@
 
 add_lunch_combo du_flounder-userdebug
+add_lunch_combo aosp_flounder-userdebug
 

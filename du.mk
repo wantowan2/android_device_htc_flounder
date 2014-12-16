@@ -1,4 +1,4 @@
-# Copyright (C) 2013 The Android Open Source Project
+# Copyright (C) 2014 Teamdu
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,10 +11,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# And Ed's because he wants it that way, hmmp....
+
+$(call inherit-product, $(LOCAL_PATH)/product.mk)
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
+
+PRODUCT_PROPERTY_OVERRIDES += \
+        net.dns1=8.8.8.8 \
+        net.dns2=8.8.4.4
 
 PRODUCT_NAME := du_flounder
 PRODUCT_DEVICE := flounder
 PRODUCT_BRAND := Android
-PRODUCT_MODEL := Volantis
+PRODUCT_MODEL := DU on Flounder
 PRODUCT_MANUFACTURER := HTC
+PRODUCT_RESTRICT_VENDOR_FILES := false
+
+$(call inherit-product, $(LOCAL_PATH)/flounder64/BoardConfig.mk)
+
+# Inherit some common du stuff.
+$(call inherit-product, vendor/du/config/common_full_tablet_wifionly.mk)
+$(call inherit-product, vendor/du/config/nfc_enhanced.mk)
+
+# Copy Bootanimation
+PRODUCT_COPY_FILES += \
+vendor/du/prebuilt/common/bootanimation/1080.zip:system/media/bootanimation.zip
+

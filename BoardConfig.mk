@@ -19,11 +19,6 @@
 LIBART_IMG_HOST_BASE_ADDRESS   := 0x60000000
 LIBART_IMG_TARGET_BASE_ADDRESS := 0x70000000
 
-# Use the non-open-source parts, if they're present
--include vendor/htc/flounder/BoardConfigVendor.mk
-# Build a separate vendor.img
-TARGET_COPY_OUT_VENDOR := vendor
-
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
@@ -41,10 +36,7 @@ ARCH_ARM_HAVE_NEON := true
 TARGET_KERNEL_SOURCE := kernel/htc/flounder-kernel
 
 HAS_PREBUILT_KERNEL := true
-BOARD_KERNEL_IMAGE_NAME := device/htc/flounder-kernel/Image.gz-dtb
-
-TARGET_KERNEL_CONFIG := kernel/htc/flounder/arch/arm64/configs/flounder_defconfig
-TARGET_KERNEL_CONFIG_CUSTOM := kernel/htc/flounder/arch/arm64/configs/elementalx_defconfig
+BOARD_KERNEL_IMAGE_NAME := kernel/htc/flounder-kernel/Image.gz-dtb
 
 # Disable emulator for "make dist" until there is a 64-bit qemu kernel
 BUILD_EMULATOR := false
@@ -92,9 +84,15 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
 
-BOARD_HAL_STATIC_LIBRARIES := libdumpstate.flounder libhealthd.flounder
+TARGET_CAMERA_USE_NOKIA_STORE := false
+TARGET_CAMERA_HAS_FLASH := true
 
 BOARD_VENDOR_USE_SENSOR_HAL := sensor_hub
+BOARD_HAL_STATIC_LIBRARIES := libdumpstate.flounder libhealthd.flounder
+
+# let charger mode enter suspend
+BOARD_CHARGER_ENABLE_SUSPEND := true
+
 
 # GPS related defines
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
@@ -142,24 +140,21 @@ ART_USE_HSPACE_COMPACT=true
 # Include an expanded selection of fonts
 EXTENDED_FONT_FOOTPRINT := true
 
-# let charger mode enter suspend
-BOARD_CHARGER_ENABLE_SUSPEND := true
-
 MALLOC_IMPL := dlmalloc
 
 # Use the non-open-source parts, if they're present
 -include vendor/du/config/common.mk
 -include vendor/du/config/common.mkcommon_full_tablet_wifionly.mk
--include vendor/htc/flounder/BoardConfigVendor.mk
 
 # Build a separate vendor.img
-
+# Use the non-open-source parts, if they're present
+#-include vendor/htc/flounder/device-flounder.mk
+#include vendor/htc/flounder/device-flounder.mk
+# Build a separate vendor.img
 TARGET_COPY_OUT_VENDOR := vendor
 
 # Assert
 TARGET_BOARD_INFO_FILE ?= device/htc/flounder/board-info.txt
 TARGET_OTA_ASSERT_DEVICE := flounder,volantis
 
-
-TARGET_USE_QCOM_UTILS := false
 

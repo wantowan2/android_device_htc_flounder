@@ -87,7 +87,10 @@ BOARD_USES_ALSA_AUDIO := true
 TARGET_CAMERA_USE_NOKIA_STORE := false
 TARGET_CAMERA_HAS_FLASH := true
 
+TARGET_CAMERA := msm_camera
+
 BOARD_VENDOR_USE_SENSOR_HAL := sensor_hub
+
 BOARD_HAL_STATIC_LIBRARIES := libdumpstate.flounder libhealthd.flounder
 
 # let charger mode enter suspend
@@ -142,10 +145,6 @@ EXTENDED_FONT_FOOTPRINT := true
 
 MALLOC_IMPL := dlmalloc
 
-# Use the non-open-source parts, if they're present
--include vendor/du/config/common.mk
--include vendor/du/config/common.mkcommon_full_tablet_wifionly.mk
-
 # Build a separate vendor.img
 # Use the non-open-source parts, if they're present
 #-include vendor/htc/flounder/device-flounder.mk
@@ -156,5 +155,7 @@ TARGET_COPY_OUT_VENDOR := vendor
 # Assert
 TARGET_BOARD_INFO_FILE ?= device/htc/flounder/board-info.txt
 TARGET_OTA_ASSERT_DEVICE := flounder,volantis
+TARGET_HARDWARE_ASSERT_FILE := device/htc/flounder/device.mk
 
+CONFIG_HAS_QCAMERA_DEVICE := true
 

@@ -190,7 +190,19 @@ PRODUCT_PACKAGES += \
     power.flounder \
     lights.flounder \
     sensors.flounder \
-    camera.flounder
+    tegra_camera.flounder \
+    media.flounder
+
+PRODUCT_PACKAGES += \
+    libqomx_core \
+    libmmcamera_interface \
+    libmmjpeg_interface \
+    camera.flounder \
+    mm-jpeg-interface-test \
+    mm-qcamera-app \
+    libqdutils \
+    libqdMetaData
+
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -242,6 +254,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.facelock.lively_timeout=2500 \
     ro.facelock.est_max_time=500 \
     ro.facelock.use_intro_anim=true \
+    has.camera.flash=1 \
     camera.flash_off=0 \
     drm.service.enabled=true \
     ro.com.widevine.cachesize=16777216 \
@@ -310,6 +323,6 @@ $(call inherit-product-if-exists, hardware/nvidia/tegra132/tegra132.mk)
 $(call inherit-product-if-exists, vendor/nvidia/proprietary-tegra132/tegra132-vendor.mk)
 $(call inherit-product-if-exists, vendor/htc/flounder/device-vendor.mk)
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4354/device-bcm.mk)
-$(call inherit-product-if-exists, vendor/htc/flounder/audio/lifevibes/lvve/device-vendor-lvve.mk)
+$(call inherit-product-if-exists, vendor/../audio/lifevibes/lvve/device-vendor-lvve.mk)
 $(call inherit-product-if-exists, vendor/htc/flounder/audio/tfa/device-vendor-tfa.mk)
 

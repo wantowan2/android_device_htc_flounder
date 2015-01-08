@@ -88,6 +88,10 @@ TARGET_CAMERA_USE_NOKIA_STORE := false
 TARGET_CAMERA_HAS_FLASH := true
 
 TARGET_CAMERA := msm_camera
+CAMERA_VERSION_CODES := lollipop
+TARGET_CAMERA_HAL_3 := true
+
+LIGHTS_HARDWARE_MODULE_ID = "Flounder lights module"
 
 BOARD_VENDOR_USE_SENSOR_HAL := sensor_hub
 

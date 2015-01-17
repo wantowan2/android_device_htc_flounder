@@ -6,7 +6,6 @@
 # You may obtain a copy of the License at
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
-
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,9 +14,15 @@
 # limitations under the License.
 #
 
-# start of image reserved address space
-LIBART_IMG_HOST_BASE_ADDRESS   := 0x60000000
-LIBART_IMG_TARGET_BASE_ADDRESS := 0x70000000
+# Use the non-open-source parts, if they're present
+-include vendor/htc/flounder/BoardConfigVendor.mk
+# Build a separate vendor.img
+TARGET_COPY_OUT_VENDOR := vendor
+# Build a separate vendor.img
+# Use the non-open-source parts, if they're present
+#-include vendor/htc/flounder/device-flounder.mk
+#include vendor/htc/flounder/device-flounder.mk
+# Build a separate vendor.img
 
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -33,10 +38,39 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := denver
 ARCH_ARM_HAVE_NEON := true
 
-TARGET_KERNEL_SOURCE := kernel/htc/flounder-kernel
-
+FULL_KERNEL_BUILD := true
 HAS_PREBUILT_KERNEL := true
-BOARD_KERNEL_IMAGE_NAME := kernel/htc/flounder-kernel/Image.gz-dtb
+TARGET_KERNEL_IMAGE_SOURCE := kernel/htc/flounder-kernel
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+
+# RenderScript
+# OVERRIDE_RS_DRIVER := libnvRSDriver.so
+BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a15
+BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
+# DISABLE_RS_64_BIT_DRIVER := true
+
+# Build kernel inline
+# TARGET_KERNEL_SOURCE := kernel/htc/flounder
+# TARGET_KERNEL_CONFIG := USBhost_defconfig
+# TARGET_VARIANT_CONFIG := USBhost_defconfig
+# TARGET_SELINUX_CONFIG := USBhost_defconfig
+
+TARGET_BOARD_PLATFORM := tegra132
+NEEDS_KERNEL_COPY := true
+TARGET_BOARD_INFO_FILE := device/htc/flounder/board-info.txt
+# CONFIG_CMDLINE :="no_console_suspend=1 tegra_wdt.enable_on_probe=1 tegra_wdt.heartbeat=120"
+# CONFIG_BUILD_ARM64_APPENDED_DTB_IMAGE_NAMES := "tegra132-flounder-xaxb tegra132-flounder-xc tegra132-flounder-xdxepvt tegra132-flounder_lte-xaxbxcxdpvt"
+
+TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2782920704
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 13287555072
+BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_FLASH_BLOCK_SIZE := 4096
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_PARTITION_SIZE := 268435456
+
+TARGET_BOOTLOADER_BOARD_NAME := flounder
 
 # Disable emulator for "make dist" until there is a 64-bit qemu kernel
 BUILD_EMULATOR := false
@@ -45,57 +79,31 @@ TARGET_NO_BOOTLOADER := true
 
 TARGET_NO_RADIOIMAGE := true
 
-BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
-
-# Disable emulator for "make dist" until there is a 64-bit qemu kernel
-BUILD_EMULATOR := false
-
-TARGET_BOARD_PLATFORM := tegra132
-TARGET_BOARD_INFO_FILE := device/htc/flounder/board-info.txt
-
-TARGET_BOOTLOADER_BOARD_NAME := flounder
-
+# Display
 USE_OPENGL_RENDERER := true
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 2
 BOARD_DISABLE_TRIPLE_BUFFERED_DISPLAY_SURFACES := true
-
-TARGET_USERIMAGES_USE_EXT4 := true
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2782920704
-# BOARD_USERDATAIMAGE_PARTITION_SIZE := 13287555072
-BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_FLASH_BLOCK_SIZE := 4096
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_PARTITION_SIZE := 268435456
-
-BOARD_CHARGER_DISABLE_INIT_BLANK := true
-BOARD_USES_GENERIC_INVENSENSE := false
-
-# RenderScript
-# OVERRIDE_RS_DRIVER := libnvRSDriver.so
-BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a15
-BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
-# DISABLE_RS_64_BIT_DRIVER := true
 
 # Bluetooth
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/htc/flounder/bluetooth
 BOARD_HAVE_BLUETOOTH_BCM := true
 
+# Audio
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := true
 
-TARGET_CAMERA_USE_NOKIA_STORE := false
-TARGET_CAMERA_HAS_FLASH := true
+# Camera
+USE_DEVICE_SPECIFIC_CAMERA:= true
+USE_CAMERA_STUB := false
 
-TARGET_CAMERA := msm_camera
-
+# Sensors
 BOARD_VENDOR_USE_SENSOR_HAL := sensor_hub
-
-BOARD_HAL_STATIC_LIBRARIES := libdumpstate.flounder libhealthd.flounder
 
 # let charger mode enter suspend
 BOARD_CHARGER_ENABLE_SUSPEND := true
-
+BOARD_HAL_STATIC_LIBRARIES := libdumpstate.flounder libhealthd.flounder
+BOARD_CHARGER_DISABLE_INIT_BLANK := true
+BOARD_USES_GENERIC_INVENSENSE := false
 
 # GPS related defines
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
@@ -134,7 +142,7 @@ ifeq ($(HOST_OS),linux)
     endif
   endif
 endif
-DONT_DEXPREOPT_PREBUILTS := true
+# WITH_DEXPREOPT_BOOT_IMG_ONLY ?= true
 
 TARGET_RELEASETOOLS_EXTENSIONS := device/htc/flounder
 
@@ -145,17 +153,8 @@ EXTENDED_FONT_FOOTPRINT := true
 
 MALLOC_IMPL := dlmalloc
 
-# Build a separate vendor.img
-# Use the non-open-source parts, if they're present
-#-include vendor/htc/flounder/device-flounder.mk
-#include vendor/htc/flounder/device-flounder.mk
-# Build a separate vendor.img
-TARGET_COPY_OUT_VENDOR := vendor
-
 # Assert
 TARGET_BOARD_INFO_FILE ?= device/htc/flounder/board-info.txt
 TARGET_OTA_ASSERT_DEVICE := flounder,volantis
 TARGET_HARDWARE_ASSERT_FILE := device/htc/flounder/device.mk
-
-CONFIG_HAS_QCAMERA_DEVICE := true
 

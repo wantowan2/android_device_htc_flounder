@@ -39,7 +39,7 @@ TARGET_2ND_CPU_VARIANT := denver
 ARCH_ARM_HAVE_NEON := true
 
 FULL_KERNEL_BUILD := true
-HAS_PREBUILT_KERNEL := true
+#HAS_PREBUILT_KERNEL := true
 TARGET_KERNEL_IMAGE_SOURCE := kernel/htc/flounder-kernel
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 
@@ -50,10 +50,19 @@ BOARD_OVERRIDE_RS_CPU_VARIANT_64 := cortex-a57
 # DISABLE_RS_64_BIT_DRIVER := true
 
 # Build kernel inline
-# TARGET_KERNEL_SOURCE := kernel/htc/flounder
-# TARGET_KERNEL_CONFIG := USBhost_defconfig
-# TARGET_VARIANT_CONFIG := USBhost_defconfig
+ifeq ($(HOST_OS),linux)
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin
+else
+KERNEL_TOOLCHAIN := $(ANDROID_BUILD_TOP)/prebuilts/gcc/darwin-x86/aarch64/aarch64-linux-android-4.9/bin
+endif
+KERNEL_TOOLCHAIN_PREFIX := aarch64-linux-android-
+
+# Build kernel inline
+TARGET_KERNEL_SOURCE := kernel/htc/flounder
+TARGET_KERNEL_CONFIG := USBhost_defconfig
+TARGET_VARIANT_CONFIG := USBhost_defconfig
 # TARGET_SELINUX_CONFIG := USBhost_defconfig
+BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive
 
 TARGET_BOARD_PLATFORM := tegra132
 NEEDS_KERNEL_COPY := true

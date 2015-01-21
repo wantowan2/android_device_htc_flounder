@@ -150,7 +150,10 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 
 PRODUCT_CHARACTERISTICS := tablet,nosdcard
 
+DEVICE_PACKAGE_OVERLAYS := device/htc/flounder/overlay
+
 ifneq ($(filter du_flounder, $(TARGET_PRODUCT)),)
+
 # Wifi-Only overlays.
 DEVICE_PACKAGE_OVERLAYS := \
     $(LOCAL_PATH)/overlay \
@@ -174,6 +177,14 @@ PRODUCT_PACKAGES += \
     power.flounder \
     lights.flounder \
     sensors.flounder
+
+PRODUCT_PACKAGES += \
+    camera.flounder
+
+# PRODUCT_PACKAGES += \
+# 	libmmcamera_interface2 \
+# 	libmmcamera_interface \
+# 	libqomx_core
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \

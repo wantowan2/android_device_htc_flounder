@@ -23,3 +23,6 @@ PRELOADED_CLASSES := frameworks/base/preloaded-classes
 LIBART_IMG_HOST_BASE_ADDRESS   := 0x60000000
 LIBART_IMG_TARGET_BASE_ADDRESS := 0x70000000
 
+PRODUCT_PROPERTY_OVERRIDES := \
+    ro.carrier=wifi-only
+

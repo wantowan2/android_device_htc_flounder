@@ -1,7 +1,7 @@
 [
 {
-"repository": "device_htc_flounder-kernel",
-"target_path": "device/htc/flounder-kernel",
-"branch":       "lollipop"
+"repository": "kernel/tegra",
+"target_path": "kernel/htc/flounder",
+"branch":       "refs/tags/android-5.0.1_r0.3"
 }
 ]

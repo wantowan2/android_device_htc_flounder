@@ -32,6 +32,7 @@ $(call inherit-product, $(LOCAL_PATH)/flounder64/BoardConfig.mk)
 # Inherit some common du stuff.
 $(call inherit-product, vendor/du/config/common.mk)
 $(call inherit-product, vendor/du/config/common_full_tablet_wifionly.mk)
+# $(call inherit-product, vendor/du/config/common_full_phone.mk)
 $(call inherit-product, vendor/du/config/nfc_enhanced.mk)
 
 # Copy Bootanimation

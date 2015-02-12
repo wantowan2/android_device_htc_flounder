@@ -1,5 +1,15 @@
 import common
+import hashlib
 import struct
+
+def GetImageEdifyScript(zip, partition, filename):
+  file_size = zip.getinfo("RADIO/%s" % filename).file_size
+  sha1 = hashlib.sha1()
+  sha1.update(zip.read("RADIO/%s" % filename))
+  return ('ifelse((sha1_check(read_file("EMMC:%s:%d:%s")) != ""),'
+          '(ui_print("%s already up to date")),'
+          '(package_extract_file("%s", "%s")));'
+          % (partition, file_size, sha1.hexdigest(), partition, filename, partition))
 
 def FullOTA_InstallEnd(info):
   try:
@@ -9,8 +19,8 @@ def FullOTA_InstallEnd(info):
   else:
     info.script.Print("Writing bootloader.img...")
     common.ZipWriteStr(info.output_zip, "bootloader.img", firmware_img)
-    info.script.AppendExtra(
-        'package_extract_file("bootloader.img", "/dev/block/platform/sdhci-tegra.3/by-name/OTA");')
+    info.script.AppendExtra(GetImageEdifyScript(info.input_zip,
+        "/dev/block/platform/sdhci-tegra.3/by-name/OTA", "bootloader.img"));
 
   try:
     firmware_img = info.input_zip.read("RADIO/vendor.img")
@@ -18,9 +28,9 @@ def FullOTA_InstallEnd(info):
     print "no vendor.img in target_files; skipping install"
   else:
     info.script.Print("Writing vendor.img...")
-    common.ZipWriteStr(info.output_zip, "vendor.img", firmware_img)
-    info.script.AppendExtra(
-        'package_extract_file("vendor.img", "/dev/block/platform/sdhci-tegra.3/by-name");')
+    common.ZipWriteStr(info.output_zip, "vendor.img", vendor_img)
+    info.script.AppendExtra(GetImageEdifyScript(info.input_zip,
+        "/dev/block/platform/sdhci-tegra.3/by-name/VNR", "vendor.img"));
 
 def IncrementalOTA_InstallEnd(info):
   try:

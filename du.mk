@@ -16,6 +16,9 @@ $(call inherit-product, $(LOCAL_PATH)/product.mk)
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 
+$(call inherit-product, device/htc/flounder/aosp_flounder.mk)
+
+$(call inherit-product-if-exists, vendor/htc/flounder/flounder-vendor-blobs.mk)
 PRODUCT_PROPERTY_OVERRIDES += \
         net.dns1=8.8.8.8 \
         net.dns2=8.8.4.4

@@ -37,5 +37,5 @@ $(call inherit-product, vendor/du/config/nfc_enhanced.mk)
 
 # Copy Bootanimation
 PRODUCT_COPY_FILES += \
-vendor/du/prebuilt/common/bootanimation/1080.zip:system/media/bootanimation.zip
+vendor/du/prebuilt/common/bootanimation/bootanimation.zip:system/media/bootanimation.zip
 

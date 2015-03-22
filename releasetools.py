@@ -20,7 +20,7 @@ def FullOTA_InstallEnd(info):
     info.script.Print("Writing vendor.img...")
     common.ZipWriteStr(info.output_zip, "vendor.img", firmware_img)
     info.script.AppendExtra(
-        'package_extract_file("vendor.img", "/dev/block/platform/sdhci-tegra.3/by-name/OTA");')
+        'package_extract_file("vendor.img", "/dev/block/platform/sdhci-tegra.3/by-name");')
 
 def IncrementalOTA_InstallEnd(info):
   try:
